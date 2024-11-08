@@ -12,16 +12,29 @@ import (
 
 // utility function to validate date
 func ValidateDate(date string) error {
+	if _, err := time.Parse("2006-01-02", date); err != nil {
+		return fmt.Errorf("invalid purchase date: %s", date)
+	}
 	return nil
 }
 
 // utility function to validate time
 func ValidateTime(timer string) error {
+	if _, err := time.Parse("15:04", timer); err != nil {
+		return fmt.Errorf("invalid purchase time: %s", timer)
+	}
 	return nil
 }
 
 // utility function to validate dollar value
 func ValidateAmount(amount string, field string) error {
+	f, err := strconv.ParseFloat(amount, 64)
+	if err != nil {
+		return fmt.Errorf("invalid %s: %s", field, amount)
+	}
+	if fmt.Sprintf("%.2f", f) != amount {
+		return fmt.Errorf("invalid %s: %s (must have exactly two decimal places)", field, amount)
+	}
 	return nil
 }
 
