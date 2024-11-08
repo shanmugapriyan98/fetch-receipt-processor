@@ -18,6 +18,9 @@ Webservice which processes the receipt and provides an id and calculates the rew
 * To build the webservice, run the command: `go build .`
 * To start running the service, run: `./fetch-receipt-processor`
 
+> [!NOTE]
+> Make sure you download the .env file
+
 To test the service, run: `go test -v`
 
 ## Implementation
@@ -39,7 +42,8 @@ To test the service, run: `go test -v`
 Once the application/container is running, we can access the endpoints of the webservice
 
 > [!NOTE]
-> Application will run in port 8080 by default
+> Application will run in port 8080 by default.
+> <br> If you want to use a different port, change PORT value in .env file
 
 > http://localhost:8080/receipts/process
 > >
