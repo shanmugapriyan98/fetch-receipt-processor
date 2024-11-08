@@ -1,6 +1,8 @@
 package handler
 
-import "fetch-receipt-processor/internal/models"
+import (
+	"fetch-receipt-processor/internal/models"
+)
 
 type PointsCalculator interface {
 	CalculatePoints(receipt models.Receipt) int64

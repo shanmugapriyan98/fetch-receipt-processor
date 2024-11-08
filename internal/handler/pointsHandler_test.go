@@ -24,7 +24,7 @@ func TestCalculatePointsSimple(t *testing.T) {
 		Items:        items,
 	}
 
-	pointsCalculator := NewPointsCalculator()
+	pointsCalculator := NewDefaultPointsCalculator()
 	actualResponse := pointsCalculator.CalculatePoints(receipt1)
 	expectedResponse := int64(31)
 
@@ -53,7 +53,7 @@ func TestCalculatePointsMultipleItems(t *testing.T) {
 		Items:        items,
 	}
 
-	pointsCalculator := NewPointsCalculator()
+	pointsCalculator := NewDefaultPointsCalculator()
 	actualResponse := pointsCalculator.CalculatePoints(receipt2)
 	expectedResponse := int64(15)
 

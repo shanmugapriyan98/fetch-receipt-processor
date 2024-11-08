@@ -33,7 +33,7 @@ func TestProcessReceipt(t *testing.T) {
 	// Initialize Gin Router
 	r := gin.Default()
 
-	pointsCalc := NewPointsCalculator()
+	pointsCalc := NewDefaultPointsCalculator()
 	repo := repo.NewPointsMap()
 	recieptHandler := NewReceiptHandler(*repo, pointsCalc)
 
