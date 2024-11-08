@@ -1,9 +1,11 @@
-package handlers
+package main
 
 import (
 	"bytes"
 	"encoding/json"
+	"fetch-receipt-processor/internal/handlers"
 	"fetch-receipt-processor/internal/repo"
+	"fetch-receipt-processor/internal/routers"
 	"fmt"
 	"io"
 	"net/http"
@@ -30,15 +32,11 @@ func sendRequest(t *testing.T, r *gin.Engine, method string, url string, body []
 
 func TestProcessReceipt(t *testing.T) {
 
-	// Initialize Gin Router
-	r := gin.Default()
-
-	pointsCalc := NewDefaultPointsCalculator()
+	pointsCalc := handlers.NewDefaultPointsCalculator()
 	repo := repo.NewPointsMap()
-	receiptHandler := NewReceiptHandler(*repo, pointsCalc)
+	receiptHandler := handlers.NewReceiptHandler(*repo, pointsCalc)
 
-	r.POST("/receipts/process", receiptHandler.ProcessReceipt)
-	r.GET("/receipts/:id/points", receiptHandler.GetPoints)
+	r := routers.InitRouter(receiptHandler)
 
 	// Test data taken from examples directory
 	successRequest := `{
@@ -60,7 +58,7 @@ func TestProcessReceipt(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code, "Expected HTTP STATUS OK for Receipt Processing")
 
 	// Assign response body to result and validate errors
-	var result processReceiptItem
+	var result handlers.ProcessReceiptItem
 	err := json.Unmarshal(respBody, &result)
 	require.NoError(t, err, "Unable to parse response JSON")
 	require.NotEmpty(t, result.Id, "Receipt ID missing in the response JSON")

@@ -11,12 +11,12 @@ import (
 )
 
 // structure definition for storing result of process receipt handler
-type processReceiptItem struct {
+type ProcessReceiptItem struct {
 	Id string `json:"id"`
 }
 
 // structure definition for storing result of get points handler
-type getPointsItem struct {
+type GetPointsItem struct {
 	Points int64 `json:"points"`
 }
 
@@ -69,7 +69,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 	points := r.pointsCalculator.CalculatePoints(receipt)
 	r.repository.StorePoints(uuid, points)
 
-	result := processReceiptItem{
+	result := ProcessReceiptItem{
 		Id: uuid,
 	}
 	c.IndentedJSON(http.StatusOK, result)
@@ -85,7 +85,7 @@ func (r *ReceiptHandler) GetPoints(c *gin.Context) {
 		})
 		return
 	}
-	result := getPointsItem{
+	result := GetPointsItem{
 		Points: value,
 	}
 	c.IndentedJSON(http.StatusOK, result)
