@@ -5,7 +5,7 @@ type PointsRepo struct {
 	points map[string]int64
 }
 
-// function to return a new RecieptsAndPointsRepo instance
+// function to return a new PointsRepo instance
 func NewPointsMap() *PointsRepo {
 	return &PointsRepo{
 		points: make(map[string]int64),

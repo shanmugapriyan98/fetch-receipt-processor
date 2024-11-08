@@ -35,10 +35,10 @@ func TestProcessReceipt(t *testing.T) {
 
 	pointsCalc := NewDefaultPointsCalculator()
 	repo := repo.NewPointsMap()
-	recieptHandler := NewReceiptHandler(*repo, pointsCalc)
+	receiptHandler := NewReceiptHandler(*repo, pointsCalc)
 
-	r.POST("/receipts/process", recieptHandler.ProcessReceipt)
-	r.GET("/receipts/:id/points", recieptHandler.GetPoints)
+	r.POST("/receipts/process", receiptHandler.ProcessReceipt)
+	r.GET("/receipts/:id/points", receiptHandler.GetPoints)
 
 	// Test data taken from examples directory
 	successRequest := `{
