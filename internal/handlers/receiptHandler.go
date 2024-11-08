@@ -22,12 +22,12 @@ type getPointsItem struct {
 
 // structure definition for Receipt Handler
 type ReceiptHandler struct {
-	repository       repo.ReceiptsAndPointsRepo
+	repository       repo.PointsRepo
 	pointsCalculator PointsCalculator
 }
 
 // function to create an instance of Receipt Handler
-func NewReceiptHandler(repo repo.ReceiptsAndPointsRepo, pointsCalculator PointsCalculator) *ReceiptHandler {
+func NewReceiptHandler(repo repo.PointsRepo, pointsCalculator PointsCalculator) *ReceiptHandler {
 	return &ReceiptHandler{repository: repo, pointsCalculator: pointsCalculator}
 }
 
@@ -65,8 +65,6 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 		})
 		return
 	}
-
-	r.repository.StoreReceipt(uuid, receipt)
 
 	points := r.pointsCalculator.CalculatePoints(receipt)
 	r.repository.StorePoints(uuid, points)
