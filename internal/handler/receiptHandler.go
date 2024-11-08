@@ -43,7 +43,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 
 	if err := c.BindJSON(&receipt); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":   "Invalid Input JSON",
+			"msg":   "The receipt is invalid",
 			"error": err,
 		})
 		return
@@ -59,7 +59,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 			errorMessages = append(errorMessages, err.Error())
 		}
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":    "There are errors in receipt",
+			"msg":    "The receipt is invalid",
 			"errors": errorMessages,
 		})
 		return
@@ -79,7 +79,13 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 // handler for receiving points by ID
 func (r *ReceiptHandler) GetPoints(c *gin.Context) {
 	id := c.Param("id")
-	value := r.repo.GetPoints(id)
+	value, found := r.repo.GetPoints(id)
+	if !found {
+		c.JSON(http.StatusNotFound, gin.H{
+			"msg": "No receipt found for that id",
+		})
+		return
+	}
 	result := getPointsItem{
 		Points: value,
 	}

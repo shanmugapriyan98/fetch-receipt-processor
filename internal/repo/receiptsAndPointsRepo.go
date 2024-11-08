@@ -27,7 +27,7 @@ func (r *ReceiptsAndPointsRepo) StorePoints(id string, points int64) {
 }
 
 // function to get points linked with an id in the map
-func (r *ReceiptsAndPointsRepo) GetPoints(id string) int64 {
-	points := r.points[id]
-	return points
+func (r *ReceiptsAndPointsRepo) GetPoints(id string) (int64, bool) {
+	points, found := r.points[id]
+	return points, found
 }
