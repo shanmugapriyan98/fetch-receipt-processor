@@ -30,13 +30,22 @@ func sendRequest(t *testing.T, r *gin.Engine, method string, url string, body []
 	return w, respBody
 }
 
-func TestProcessReceipt(t *testing.T) {
+var (
+	receiptHandler *handlers.ReceiptHandler
+	router         *gin.Engine
+)
 
+func TestMain(m *testing.M) {
 	pointsCalc := handlers.NewDefaultPointsCalculator()
 	repo := repo.NewPointsMap()
-	receiptHandler := handlers.NewReceiptHandler(*repo, pointsCalc)
+	receiptHandler = handlers.NewReceiptHandler(*repo, pointsCalc)
 
-	r := routers.InitRouter(receiptHandler)
+	router = routers.InitRouter(receiptHandler)
+
+	m.Run()
+}
+
+func TestProcessReceipt(t *testing.T) {
 
 	// Test data taken from examples directory
 	successRequest := `{
@@ -54,7 +63,7 @@ func TestProcessReceipt(t *testing.T) {
 	}`
 
 	// Send POST Request for Process Receipt Flow
-	w, respBody := sendRequest(t, r, "POST", "/receipts/process", []byte(successRequest))
+	w, respBody := sendRequest(t, router, "POST", "/receipts/process", []byte(successRequest))
 	assert.Equal(t, http.StatusOK, w.Code, "Expected HTTP STATUS OK for Receipt Processing")
 
 	// Assign response body to result and validate errors
@@ -65,10 +74,33 @@ func TestProcessReceipt(t *testing.T) {
 
 	// Send GET request for Get Points Flow
 	url := fmt.Sprintf("/receipts/%s/points", result.Id)
-	w, respBody = sendRequest(t, r, "GET", url, nil)
+	w, respBody = sendRequest(t, router, "GET", url, nil)
 	assert.Equal(t, http.StatusOK, w.Code, "Expected HTTP STATUS OK for Get Points")
 
 	// Validate points and check whether we are receiving expected points
 	expectedResponse := `{"points":28}`
 	require.JSONEq(t, expectedResponse, string(respBody), "Mismatch in points received from Get Points endpoint")
+}
+
+func TestProcessReceipt2(t *testing.T) {
+
+	invalidRequest := `{
+		"retailer": "Target",
+		"purchaseDate": "2022-01-01",
+		"purchaseTime": "13:01",
+		"items": [
+			{"shortDescription": "Mountain Dew 12PK", "price": "Six"}, //invalid price
+			{"shortDescription": "Emils Cheese Pizza", "price": "12.25"},
+		],
+		"total": "35.35"
+	}`
+
+	w, _ := sendRequest(t, router, "POST", "/receipts/process", []byte(invalidRequest))
+	assert.Equal(t, http.StatusBadRequest, w.Code, "Expected HTTP BAD REQUEST for Invalid Receipt")
+}
+
+func TestProcessReceipt3(t *testing.T) {
+	w, _ := sendRequest(t, router, "GET", "receipts/190/points", nil)
+	assert.Equal(t, http.StatusNotFound, w.Code, "Expected HTTP STATUS NOT FOUND for Get Points with ID which does not exists")
+
 }
