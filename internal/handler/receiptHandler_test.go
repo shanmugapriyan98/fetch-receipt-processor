@@ -70,6 +70,6 @@ func TestProcessReceipt(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code, "Expected HTTP STATUS OK for Get Points")
 
 	// Validate points and check whether we are receiving expected points
-	expectedResponse := `{"points":"28"}`
+	expectedResponse := `{"points":28}`
 	require.JSONEq(t, expectedResponse, string(respBody), "Mismatch in points received from Get Points endpoint")
 }

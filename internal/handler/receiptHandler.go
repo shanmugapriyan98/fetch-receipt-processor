@@ -53,7 +53,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 
 	r.repo.StoreReceipt(uuid, receipt)
 
-	points := calculatePoints()
+	points := calculatePoints(receipt)
 	r.repo.StorePoints(uuid, points)
 
 	result := processReceiptItem{
