@@ -43,13 +43,27 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 
 	if err := c.BindJSON(&receipt); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":   "Invalid Input",
+			"msg":   "Invalid Input JSON",
 			"error": err,
 		})
 		return
 	}
 
 	uuid := u.String()
+
+	receiptErrors := CheckIfReceiptIsInvalid(receipt)
+
+	if len(receiptErrors) > 0 {
+		var errorMessages []string
+		for _, err := range receiptErrors {
+			errorMessages = append(errorMessages, err.Error())
+		}
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":    "There are errors in receipt",
+			"errors": errorMessages,
+		})
+		return
+	}
 
 	r.repo.StoreReceipt(uuid, receipt)
 
