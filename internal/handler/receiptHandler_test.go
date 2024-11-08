@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"fetch-receipt-processor/internal/repo"
 	"fmt"
 	"io"
 	"net/http"
@@ -31,8 +32,12 @@ func TestProcessReceipt(t *testing.T) {
 
 	// Initialize Gin Router
 	r := gin.Default()
-	r.POST("/receipts/process", ProcessReceipt)
-	r.GET("/receipts/:id/points", GetPoints)
+
+	repo := repo.NewPointsMap()
+	recieptHandler := NewReceiptHandler(*repo)
+
+	r.POST("/receipts/process", recieptHandler.ProcessReceipt)
+	r.GET("/receipts/:id/points", recieptHandler.GetPoints)
 
 	// Test data taken from examples directory
 	successRequest := `{
