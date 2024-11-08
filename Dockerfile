@@ -43,6 +43,7 @@ WORKDIR /app
 
 # Copy only the built binary from the build stage
 COPY --from=go-builder /src/bin/main .
+COPY --from=go-builder /src/.env .
 
 # Create a non-root user for running the application
 RUN adduser -D appuser
@@ -51,7 +52,7 @@ RUN adduser -D appuser
 USER appuser
 
 # container listens on port 8080
-EXPOSE 8080
+EXPOSE ${PORT}
 
 # Command to run the application
 CMD ["./main"]
