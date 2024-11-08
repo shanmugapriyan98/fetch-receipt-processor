@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fetch-receipt-processor/pkg/models"
+	"fetch-receipt-processor/internal/models"
 	"fetch-receipt-processor/pkg/utils"
 )
 

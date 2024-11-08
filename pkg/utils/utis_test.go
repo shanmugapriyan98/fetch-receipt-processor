@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fetch-receipt-processor/pkg/models"
+	"fetch-receipt-processor/internal/models"
 	"testing"
 )
 

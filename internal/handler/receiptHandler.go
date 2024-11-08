@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"fetch-receipt-processor/internal/models"
 	"fetch-receipt-processor/internal/repo"
-	"fetch-receipt-processor/pkg/models"
 	"fmt"
 	"net/http"
 

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fetch-receipt-processor/pkg/models"
+	"fetch-receipt-processor/internal/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

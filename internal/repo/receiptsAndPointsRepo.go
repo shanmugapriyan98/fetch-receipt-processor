@@ -1,6 +1,6 @@
 package repo
 
-import "fetch-receipt-processor/pkg/models"
+import "fetch-receipt-processor/internal/models"
 
 // structure definition for ReceipsAndPointsRepo repository
 type ReceiptsAndPointsRepo struct {
