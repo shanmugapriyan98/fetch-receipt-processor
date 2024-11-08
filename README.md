@@ -24,11 +24,11 @@ To test the service, run: `go test -v`
 
 * Utilized the Factory and Strategy design patterns to enhance the scalability of the application.
   > <br> Idea behind Strategy pattern: Currently, our points calculator implements several rules. To make the application adaptable to
-  > <br> new calculation rules, we can dynamically provide the required rules at runtime, promoting better isolation and flexibility.
+  > new calculation rules, we can dynamically provide the required rules at runtime, promoting better isolation and flexibility.
   > >
   > Idea behind Factory pattern: The Factory pattern allows us to create a points calculator with a custom strategy. Instead of tightly
-  > <br> coupling the creation logic in the main function, we can use the Factory to dynamically provide the appropriate calculator
-  > <br> based on the required strategy.
+  > coupling the creation logic in the main function, we can use the Factory to dynamically provide the appropriate calculator
+  > based on the required strategy.
 * Used UUID for ID Generation
 * Utilized maps to retrieve points associated with an ID
 * Followed DRY principle to promote reusability in the code
