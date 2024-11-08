@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fetch-receipt-processor/internal/handler"
+	"fetch-receipt-processor/internal/handlers"
 	"fetch-receipt-processor/internal/repo"
 	"fmt"
 
@@ -12,7 +12,7 @@ func main() {
 	router := gin.Default()
 
 	//creating points calculator with factory pattern
-	pointsCalculator, err := handler.NewPointsCalculatorFactory("one")
+	pointsCalculator, err := handlers.NewPointsCalculatorFactory("one")
 	if err != nil {
 		fmt.Printf("Error creating points calculator: %v", err)
 		return
@@ -21,7 +21,7 @@ func main() {
 	repo := repo.NewPointsMap()
 
 	// creating receipt handler using strategy pattern
-	recieptHandler := handler.NewReceiptHandler(*repo, pointsCalculator)
+	recieptHandler := handlers.NewReceiptHandler(*repo, pointsCalculator)
 
 	router.POST("/receipts/process", recieptHandler.ProcessReceipt)
 	router.GET("/receipts/:id/points", recieptHandler.GetPoints)

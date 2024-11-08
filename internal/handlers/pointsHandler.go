@@ -1,4 +1,4 @@
-package handler
+package handlers
 
 import (
 	"fetch-receipt-processor/internal/models"
