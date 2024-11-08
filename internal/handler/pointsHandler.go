@@ -5,8 +5,14 @@ import (
 	"fetch-receipt-processor/pkg/utils"
 )
 
+type DefaultPointsCalculator struct{}
+
+func NewPointsCalculator() PointsCalculator {
+	return &DefaultPointsCalculator{}
+}
+
 // handler to calculate points for a given receipt
-func calculatePoints(receipt models.Receipt) int64 {
+func (p *DefaultPointsCalculator) CalculatePoints(receipt models.Receipt) int64 {
 	points := int64(0)
 
 	points += utils.CalculateRetailerRewards(receipt.Retailer)
@@ -28,7 +34,7 @@ func calculatePoints(receipt models.Receipt) int64 {
 }
 
 // handler to check the receipt for any errors before processing
-func CheckIfReceiptIsInvalid(receipt models.Receipt) []error {
+func (p *DefaultPointsCalculator) CheckIfReceiptIsInvalid(receipt models.Receipt) []error {
 	var errors []error
 
 	if err := utils.ValidateDate(receipt.PurchaseDate); err != nil {

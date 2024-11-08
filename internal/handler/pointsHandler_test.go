@@ -24,7 +24,8 @@ func TestCalculatePointsSimple(t *testing.T) {
 		Items:        items,
 	}
 
-	actualResponse := calculatePoints(receipt1)
+	pointsCalculator := NewPointsCalculator()
+	actualResponse := pointsCalculator.CalculatePoints(receipt1)
 	expectedResponse := int64(31)
 
 	assert.Equal(t, expectedResponse, actualResponse)
@@ -44,7 +45,7 @@ func TestCalculatePointsMultipleItems(t *testing.T) {
 		},
 	}
 
-	var receipt1 = models.Receipt{
+	var receipt2 = models.Receipt{
 		Retailer:     "Walgreens",
 		PurchaseDate: "2022-01-02",
 		PurchaseTime: "08:13",
@@ -52,7 +53,8 @@ func TestCalculatePointsMultipleItems(t *testing.T) {
 		Items:        items,
 	}
 
-	actualResponse := calculatePoints(receipt1)
+	pointsCalculator := NewPointsCalculator()
+	actualResponse := pointsCalculator.CalculatePoints(receipt2)
 	expectedResponse := int64(15)
 
 	assert.Equal(t, expectedResponse, actualResponse)

@@ -33,8 +33,9 @@ func TestProcessReceipt(t *testing.T) {
 	// Initialize Gin Router
 	r := gin.Default()
 
+	pointsCalc := NewPointsCalculator()
 	repo := repo.NewPointsMap()
-	recieptHandler := NewReceiptHandler(*repo)
+	recieptHandler := NewReceiptHandler(*repo, pointsCalc)
 
 	r.POST("/receipts/process", recieptHandler.ProcessReceipt)
 	r.GET("/receipts/:id/points", recieptHandler.GetPoints)

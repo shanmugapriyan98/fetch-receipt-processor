@@ -10,8 +10,10 @@ import (
 func main() {
 	router := gin.Default()
 
+	pointsCalculator := handler.NewPointsCalculator()
 	repo := repo.NewPointsMap()
-	recieptHandler := handler.NewReceiptHandler(*repo)
+	recieptHandler := handler.NewReceiptHandler(*repo, pointsCalculator)
+
 	router.POST("/receipts/process", recieptHandler.ProcessReceipt)
 	router.GET("/receipts/:id/points", recieptHandler.GetPoints)
 	router.Run("0.0.0.0:8080")

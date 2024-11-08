@@ -22,12 +22,13 @@ type getPointsItem struct {
 
 // structure definition for Receipt Handler
 type ReceiptHandler struct {
-	repo repo.ReceiptsAndPointsRepo
+	repository       repo.ReceiptsAndPointsRepo
+	pointsCalculator PointsCalculator
 }
 
 // function to create an instance of Receipt Handler
-func NewReceiptHandler(repo repo.ReceiptsAndPointsRepo) *ReceiptHandler {
-	return &ReceiptHandler{repo: repo}
+func NewReceiptHandler(repo repo.ReceiptsAndPointsRepo, pointsCalculator PointsCalculator) *ReceiptHandler {
+	return &ReceiptHandler{repository: repo, pointsCalculator: pointsCalculator}
 }
 
 // handler for process receipts and storing in memory
@@ -51,7 +52,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 
 	uuid := u.String()
 
-	receiptErrors := CheckIfReceiptIsInvalid(receipt)
+	receiptErrors := r.pointsCalculator.CheckIfReceiptIsInvalid(receipt)
 
 	if len(receiptErrors) > 0 {
 		var errorMessages []string
@@ -65,10 +66,10 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 		return
 	}
 
-	r.repo.StoreReceipt(uuid, receipt)
+	r.repository.StoreReceipt(uuid, receipt)
 
-	points := calculatePoints(receipt)
-	r.repo.StorePoints(uuid, points)
+	points := r.pointsCalculator.CalculatePoints(receipt)
+	r.repository.StorePoints(uuid, points)
 
 	result := processReceiptItem{
 		Id: uuid,
@@ -79,7 +80,7 @@ func (r *ReceiptHandler) ProcessReceipt(c *gin.Context) {
 // handler for receiving points by ID
 func (r *ReceiptHandler) GetPoints(c *gin.Context) {
 	id := c.Param("id")
-	value, found := r.repo.GetPoints(id)
+	value, found := r.repository.GetPoints(id)
 	if !found {
 		c.JSON(http.StatusNotFound, gin.H{
 			"msg": "No receipt found for that id",
