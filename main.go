@@ -14,5 +14,5 @@ func main() {
 	recieptHandler := handler.NewReceiptHandler(*repo)
 	router.POST("/receipts/process", recieptHandler.ProcessReceipt)
 	router.GET("/receipts/:id/points", recieptHandler.GetPoints)
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
